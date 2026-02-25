@@ -54,22 +54,20 @@ Your job:
 // Database connection
 
 
-let isConnected = false;
-
 async function connectDB() {
-    if (isConnected) return;
+    // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+    if (mongoose.connection.readyState === 1) return;
     try {
         await mongoose.connect(process.env.MONGODB_URI);
-        isConnected = true;
         console.log('Connected to MongoDB');
     } catch (err) {
         console.error('MongoDB connection error:', err);
     }
 }
 
-//add middl ware 
+// Ensure DB is connected before processing requests
 app.use(async (req, res, next) => {
-    if (!isConnected) {
+    if (mongoose.connection.readyState !== 1) {
         await connectDB();
     }
     next();
