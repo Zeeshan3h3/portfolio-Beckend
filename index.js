@@ -10,11 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-    origin: [
-        'https://portfolio-mdzeeshan.vercel.app',
-        'http://localhost:5173',
-        'http://localhost:4173',
-    ],
+    origin: true,
     credentials: true,
 }));
 app.use(express.json());
@@ -215,7 +211,7 @@ app.post('/api/chat', async (req, res) => {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                'HTTP-Referer': 'https://portfolio-mdzeeshan.vercel.app',
+                'HTTP-Referer': 'https://portfolio-beckend-0uvq.onrender.com/',
                 'X-Title': 'Zeeshan Portfolio Chatbot',
                 'Content-Type': 'application/json'
             },
