@@ -54,8 +54,8 @@ Your job:
 // Database connection
 
 
+// Database logic moved to individual routes for Serverless Cold Start reliability
 async function connectDB() {
-    // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
     if (mongoose.connection.readyState === 1) return;
     try {
         await mongoose.connect(process.env.MONGODB_URI);
@@ -64,14 +64,6 @@ async function connectDB() {
         console.error('MongoDB connection error:', err);
     }
 }
-
-// Ensure DB is connected before processing requests
-app.use(async (req, res, next) => {
-    if (mongoose.connection.readyState !== 1) {
-        await connectDB();
-    }
-    next();
-});
 
 // Contact Schema
 const contactSchema = new mongoose.Schema({
@@ -104,6 +96,7 @@ app.get('/', (req, res) => {
 // Contact form
 app.post('/api/contact', async (req, res) => {
     try {
+        await connectDB();
         const { name, email, message } = req.body;
 
         if (!name || !email || !message) {
@@ -180,6 +173,7 @@ function getSmartFallback(message) {
 app.post('/api/chat', async (req, res) => {
     let message = '';
     try {
+        await connectDB();
         const { message: msg, history = [] } = req.body;
         message = msg || '';
 
