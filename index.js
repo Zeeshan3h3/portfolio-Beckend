@@ -213,7 +213,7 @@ app.post('/api/chat', async (req, res) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'upstage/solar-pro-3:free',
+                model: 'google/gemma-3-4b-it:free',
                 messages: messages,
             })
         });
@@ -236,8 +236,12 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-// app.listen(PORT, () => {
-//     console.log(`🚀 Server running on port ${PORT}`);
-// });
-module.exports = app
+// Start server locally; export for Vercel serverless
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
 
