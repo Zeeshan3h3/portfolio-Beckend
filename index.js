@@ -80,7 +80,7 @@ const contactSchema = new mongoose.Schema({
     message: { type: String, required: true },
     date: { type: Date, default: Date.now }
 });
-const Contact = mongoose.model('Contact', contactSchema);
+const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
 
 // Chat history Schema (optional - for logging)
 const chatSchema = new mongoose.Schema({
@@ -88,7 +88,7 @@ const chatSchema = new mongoose.Schema({
     aiReply: String,
     timestamp: { type: Date, default: Date.now }
 });
-const ChatLog = mongoose.model('ChatLog', chatSchema);
+const ChatLog = mongoose.models.ChatLog || mongoose.model('ChatLog', chatSchema);
 
 // ─── Routes ───
 
